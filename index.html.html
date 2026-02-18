@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to 63 Basic POP</title>
+
+    <!-- Google Font: Oswald -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Oswald', sans-serif;
+            background: linear-gradient(180deg, #1a1d22 0%, #0f1115 100%);
+            color: #ffffff;
+        }
+
+        .hero {
+            position: relative;
+            height: 50vh;
+            overflow: hidden;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: blur(4px);
+            transform: scale(1.05);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-title {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 60px 20px 100px 20px;
+            text-align: center;
+        }
+
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px 35px;
+            border-radius: 8px;
+            min-width: 120px;
+        }
+
+       .counter-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 
+        0 0 5px #ff0000,
+        0 0 10px #ff0000,
+        0 0 20px #8b0000,
+        0 0 40px #8b0000;
+}
+
+        .counter-label {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .counter-box {
+            margin: 40px 0;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .day-box {
+            padding: 12px 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .day-number {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .day-name {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+     .crossed {
+    position: relative;
+    opacity: 0.35;
+    transform: scale(0.92);
+    transition: all 0.4s ease;
+}
+
+.crossed::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background: #ff0000;
+    box-shadow: 0 0 8px #ff0000, 0 0 15px #8b0000;
+    transform: rotate(-8deg);
+    animation: strike 0.4s ease forwards;
+}
+
+@keyframes strike {
+    from {
+        width: 0%;
+        opacity: 1;
+    }
+    to {
+        width: 80%;
+        opacity: 1;
+    }
+}
+
+        .quote {
+            margin-top: 70px;
+            font-size: 1.6rem;
+            letter-spacing: 3px;
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 25px;
+            right: 35px;
+            text-align: right;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.4rem;
+            opacity: 0.9;
+        }
+
+        .signature span {
+            display: block;
+        }
+
+      .d-day {
+    background: #8b0000;
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(255,0,0,0.6);
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <img src="NMA BG.jpg" alt="Background">
+        <div class="overlay"></div>
+        <div class="hero-title">Countdown to 63 Basic POP</div>
+    </div>
+
+    <div class="content">
+
+        <!-- FULL COUNTDOWN -->
+        <div class="countdown-grid">
+            <div class="time-box">
+                <div id="days" class="counter-number">0</div>
+                <div class="counter-label">DAYS</div>
+            </div>
+            <div class="time-box">
+                <div id="hoursFull" class="counter-number">0</div>
+                <div class="counter-label">HOURS</div>
+            </div>
+            <div class="time-box">
+                <div id="minutes" class="counter-number">0</div>
+                <div class="counter-label">MINUTES</div>
+            </div>
+            <div class="time-box">
+                <div id="seconds" class="counter-number">0</div>
+                <div class="counter-label">SECONDS</div>
+            </div>
+        </div>
+
+        <!-- SIMPLE HOURS COUNTER -->
+        <div class="counter-box">
+            <div id="hours" class="counter-number">0</div>
+            <div class="counter-label">TOTAL HOURS REMAINING</div>
+        </div>
+
+        <div id="calendar" class="calendar"></div>
+
+        <div class="quote">The Few The Fearless</div>
+
+    </div>
+
+    <div class="signature">
+        <span>from amatya.</span>
+        <span>amt</span>
+    </div>
+
+    <script>
+        const commissioningDate = new Date();
+        commissioningDate.setDate(commissioningDate.getDate() + 50);
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = commissioningDate - now;
+            if (diff <= 0) return;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hoursFull = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hoursFull').textContent = hoursFull;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+            document.getElementById('hours').textContent = totalHours;
+        }
+
+      function generateCalendar() {
+    const calendar = document.getElementById('calendar');
+    calendar.innerHTML = '';
+
+    const start = new Date();
+    const totalDays = 51;
+
+    for (let i = 0; i < totalDays; i++) {
+        const dayDate = new Date();
+        dayDate.setDate(start.getDate() + i);
+
+        const box = document.createElement('div');
+        box.classList.add('day-box');
+        box.dataset.date = dayDate.toDateString();
+
+        const dayNumber = document.createElement('div');
+        dayNumber.classList.add('day-number');
+
+        const dayName = document.createElement('div');
+        dayName.classList.add('day-name');
+
+        if (i === totalDays - 1) {
+            box.classList.add('d-day');
+            dayNumber.textContent = "D-DAY";
+            dayName.textContent = "";
+        } else {
+            dayNumber.textContent = dayDate.getDate();
+            dayName.textContent = dayDate.toLocaleDateString('en-US', { weekday: 'short' });
+        }
+
+        box.appendChild(dayNumber);
+        box.appendChild(dayName);
+        calendar.appendChild(box);
+    }
+}
+        updateCountdown();
+        generateCalendar();
+        setInterval(updateCountdown, 1000);
+    </script>
+
+</body>
+</html>
